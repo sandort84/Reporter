@@ -34,7 +34,9 @@ class Reporter extends Component {
 
   componentDidMount() {
     const { fetchFilters, connection } = this.props;
-//    fetchFilters(connection);
+    if (connection.jiraUrl && connection.username && connection.password) {
+      fetchFilters(connection);
+    }
   }
 
   componentWillReceiveProps(newProps) {

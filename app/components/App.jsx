@@ -36,9 +36,15 @@ class App extends Component {
     const connection = ipcRenderer.sendSync('get-connection-details');
     const { setJiraUrl, setUsername, setPassword } = this.props;
     const dispatch = this.props.route.dispatch;
-    dispatch(setJiraUrl(connection.jiraUrl));
-    dispatch(setUsername(connection.username));
-    dispatch(setPassword(connection.password));
+    if (connection.jiraUrl) {
+      dispatch(setJiraUrl(connection.jiraUrl));
+    }
+    if (connection.username) {
+      dispatch(setUsername(connection.username));
+    }
+    if (connection.password) {
+      dispatch(setPassword(connection.password));
+    }
     ipcRenderer.on('browser-navigate', (event, loc) => {
       hashHistory.push(loc);
     })
