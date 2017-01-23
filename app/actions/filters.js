@@ -35,34 +35,38 @@ const digestFilters = json => {
 
 // ASYNC
 
-export const fetchFilters = (connection) => dispatch => {
+export const fetchFilters = connection => dispatch => {
   dispatch(requestFilters());
-  return fetch(connection.jiraUrl + '/rest/api/2/filter/favourite', {
+  return fetch(`${connection.jiraUrl}/rest/api/2/filter/favourite`, {
     headers: {
       'Accept': 'application/json',
-      'Authorization': 'Basic ' + btoa(connection.username + ':' + connection.password)
+      'Authorization': `Basic ${btoa(connection.username + ':' + connection.password)}`
     }
   })
   .then(response => {
     let contentType = (response && response.headers.get('content-type'));
-       if(contentType && contentType.indexOf("application/json") === -1) {
-         return dispatch(failFilters([{
-           severity: SEVERITY_ERROR,
-           text: `Failed to load filters: ${response.status} - ${response.statusText}`
-         }]));
-       } else {
-        return response.json()
-        .then(json => digestFilters(json))
-        .then(filters => dispatch(receiveFilters(filters)));
-      }
+    if(contentType && contentType.indexOf("application/json") === -1) {
+      return dispatch(failFilters([
+        {
+          severity: SEVERITY_ERROR,
+          text: `Failed to load filters: ${response.status} - ${response.statusText}`
+        }
+      ]));
+    } else {
+      return response.json()
+      .then(json => digestFilters(json))
+      .then(filters => dispatch(receiveFilters(filters)));
+    }
   })
 
   .catch(e => {
     console.log(e);
-    return dispatch(failFilters([{
-      severity: SEVERITY_ERROR,
-      text: `Failed to load filters: ${e.message}`
-    }]));
+    return dispatch(failFilters([
+      {
+        severity: SEVERITY_ERROR,
+        text: `Failed to load filters: ${e.message}`
+      }
+    ]));
   });
 };
 

@@ -2,7 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { hashHistory } from 'react-router'
 import { ipcRenderer } from 'electron';
 
+import { STATUS_CONNECTED } from '../actions';
+
 const Settings = props => {
+  const test = (e) => {
+    e.preventDefault();
+    props.testConnection(props.connection);
+  }
 
   const save = (e) => {
     e.preventDefault();
@@ -14,7 +20,7 @@ const Settings = props => {
     }
   }
 
-  const { connection, setUsername, setPassword, setJiraUrl } = props;
+  const { connection, setUsername, setPassword, setJiraUrl, status } = props;
   const { jiraUrl, username, password } = connection;
 
   return (
@@ -34,7 +40,8 @@ const Settings = props => {
           <input name="password" className="form-control" type="password" value={password} onChange={e => {setPassword(e.target.value)}}/>
         </div>
         <div className="form-group">
-          <button className="btn btn-primary" disabled={!username || !password || !jiraUrl} onClick={e => {save(e)}}>Save</button>
+          <button className="btn btn-default" disabled={!username || !password || !jiraUrl} onClick={e => {test(e)}}>Test connection</button>
+          <button className="btn btn-primary" disabled={status != STATUS_CONNECTED || !username || !password || !jiraUrl} onClick={e => {save(e)}}>Save</button>
         </div>
       </form>
     </div>

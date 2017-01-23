@@ -1,4 +1,8 @@
-import { SET_JIRA_URL, SET_USERNAME, SET_PASSWORD } from '../actions';
+import {
+  SET_JIRA_URL, SET_USERNAME, SET_PASSWORD,
+  REQUEST_TEST, RECEIVE_TEST, FAIL_TEST, INVALIDATE_CONNECTION,
+  STATUS_DISCONNECTED
+} from '../actions';
 
 export const connection = (state = {
     username: '',
@@ -21,6 +25,18 @@ export const connection = (state = {
         ...state,
         jiraUrl: action.jiraUrl
       };
+    default:
+      return state;
+  }
+}
+
+export const status = (state = STATUS_DISCONNECTED, action) => {
+  switch (action.type) {
+    case REQUEST_TEST:
+    case RECEIVE_TEST:
+    case FAIL_TEST:
+    case INVALIDATE_CONNECTION:
+      return action.status
     default:
       return state;
   }

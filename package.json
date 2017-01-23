@@ -42,6 +42,8 @@
     "bootstrap": "^3.3.7",
     "deep-equal": "^1.0.1",
     "electron-config": "^0.2.1",
+    "font-awesome": "^4.7.0",
+    "font-awesome-animation": "0.0.10",
     "keytar": "^3.0.2",
     "react": "^15.4.1",
     "react-bootstrap": "^0.30.7",

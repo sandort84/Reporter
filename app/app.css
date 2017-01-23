@@ -12,14 +12,22 @@
 input, button, textarea, :focus {
     outline: none; // You should add some other style for :focus to help UX/a11y
 }
+a {
+  cursor: pointer!important;
+}
 
 /* Actual CSS down below */
 
-tr.active {
-  background-color: green;
+body {
+  padding-bottom: 50px;
+}
+
+.no-wrap {
+  white-space: nowrap;
 }
 
 div#messages {
   position: fixed;
+  top: 0;
   width: 100%;
 }

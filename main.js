@@ -53,7 +53,7 @@ ipcMain.on('get-connection-details', (event) => {
 function createWindow() {
   let route = '/';
   let jira = config.get('jira');
-  console.log(jira);
+
   if (!jira || !jira.url || !jira.user) {
     route = '/settings';
   } else {
@@ -62,7 +62,7 @@ function createWindow() {
       route = '/settings';
     }
   }
-console.log(route);
+
   let index = 'index.html';
   if (process.env.HOT) {
     index = 'index-hot.html';

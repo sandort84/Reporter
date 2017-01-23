@@ -6,6 +6,7 @@ import { hashHistory } from 'react-router';
 
 import * as actionCreators from '../actions';
 import Messages from './Messages.jsx';
+import Footer from './Footer.jsx';
 
 class App extends Component {
   static propTypes = {
@@ -27,7 +28,8 @@ class App extends Component {
       key: PropTypes.string.isRequired,
       summary: PropTypes.string
     })).isRequired,
-    active: PropTypes.string
+    active: PropTypes.string,
+    status: PropTypes.string.isRequired
   };
   constructor(props) {
     super(props);
@@ -36,7 +38,12 @@ class App extends Component {
   componentDidMount() {
     ipcRenderer.on('browser-navigate', (event, loc) => {
       hashHistory.push(loc);
-    })
+    });
+
+    const { testConnection, connection } = this.props;
+    if (connection.jiraUrl && connection.username && connection.password) {
+      testConnection(connection);
+    }
   }
 
   render() {
@@ -44,6 +51,7 @@ class App extends Component {
       <div>
         <Messages {...this.props} />
         {React.cloneElement(this.props.children, this.props)}
+        <Footer {...this.props} />
       </div>
     );
   }
@@ -55,7 +63,8 @@ const mapStateToProps = (state) => ({
   selectedFilter: state.selectedFilter,
   issues: state.issues,
   active: state.active,
-  messages: state.messages
+  messages: state.messages,
+  status: state.status
 });
 
 const mapDispatchToProps = (dispatch) => {

@@ -3,7 +3,7 @@ import { routerReducer } from 'react-router-redux';
 
 import { filters, selectedFilter } from './filters';
 import { issues, active } from './issues';
-import { connection } from './connection';
+import { connection, status } from './connection';
 import { messages } from './messages';
 
 const reporterApp = combineReducers({
@@ -13,6 +13,7 @@ const reporterApp = combineReducers({
   issues,
   active,
   messages,
+  status,
   routing: routerReducer
 });
 

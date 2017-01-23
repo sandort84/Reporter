@@ -52,19 +52,21 @@ class Reporter extends Component {
     const {selectedFilter, filters, issues, active } = this.props;
     return (
       <div className="container-fluid">
+        <form>
+          <div className="form-group">
+            <label> Filter </label>
+              <select value={selectedFilter} className="form-control" disabled={filters.length == 0} onChange={evt => this.handleFilterSelect(evt.target.value)}>
+                <option value="" disabled={selectedFilter !== ''}>Please select a filter</option>
+                {
+                  filters.map(filter =>
+                    <option key={filter.id} value={filter.id}>{filter.name}{(filter.description ? (' - ' + filter.description) : '')}</option>
+                  )
+                }
+              </select>
+          </div>
+        </form>
         <div>
-          <select value={selectedFilter} className="form-control" disabled={filters.length == 0} onChange={evt => this.handleFilterSelect(evt.target.value)}>
-            <option value="" disabled={selectedFilter !== ''}>Please select a filter</option>
-            {
-              filters.map(filter =>
-                <option key={filter.id} value={filter.id}>{filter.name}{(filter.description ? (' - ' + filter.description) : '')}</option>
-              )
-            }
-          </select>
-          <div>selected: {selectedFilter}</div>
-        </div>
-        <div>
-          <table>
+          <table className="table table-striped">
             <thead>
               <tr>
                 <th>Key</th>
@@ -74,8 +76,8 @@ class Reporter extends Component {
             <tbody>
               {
                 issues.map(issue =>
-                  <tr key={issue.id} onDoubleClick={evt => this.handleIssueDoubleClick(evt, issue.id)} className={issue.id === active ? 'active' : ''}>
-                    <td>
+                  <tr key={issue.id} onDoubleClick={evt => this.handleIssueDoubleClick(evt, issue.id)} className={issue.id === active ? 'success' : ''}>
+                    <td className="no-wrap">
                       <a href="" onClick={evt => this.handleIssueClick(evt, issue.key)}>{issue.key}</a>
                     </td>
                     <td>
