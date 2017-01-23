@@ -1,6 +1,8 @@
+import { setMessages, SEVERITY_ERROR } from './messages';
+
 export const REQUEST_FILTERS = 'REQUEST_FILTERS';
 export const RECEIVE_FILTERS = 'RECEIVE_FILTERS';
-// TODO: export const FAIL_FILTERS = 'FAIL_FILTERS';
+export const FAIL_FILTERS = 'FAIL_FILTERS';
 
 const requestFilters = () => {
   return {
@@ -14,6 +16,13 @@ const receiveFilters = (filters) => {
     filters
   };
 };
+
+const failFilters = messages => dispatch => {
+  dispatch(setMessages(messages));
+  return dispatch({
+    type: FAIL_FILTERS
+  })
+}
 
 const digestFilters = json => {
   return json.map(f => ({
@@ -34,10 +43,27 @@ export const fetchFilters = (connection) => dispatch => {
       'Authorization': 'Basic ' + btoa(connection.username + ':' + connection.password)
     }
   })
-  .then(response => response.json())
-  .then(json => digestFilters(json))
-  .then(filters => dispatch(receiveFilters(filters)))
-  .catch(e => console.log(e));
+  .then(response => {
+    let contentType = (response && response.headers.get('content-type'));
+       if(contentType && contentType.indexOf("application/json") === -1) {
+         return dispatch(failFilters([{
+           severity: SEVERITY_ERROR,
+           text: `Failed to load filters: ${response.status} - ${response.statusText}`
+         }]));
+       } else {
+        return response.json()
+        .then(json => digestFilters(json))
+        .then(filters => dispatch(receiveFilters(filters)));
+      }
+  })
+
+  .catch(e => {
+    console.log(e);
+    return dispatch(failFilters([{
+      severity: SEVERITY_ERROR,
+      text: `Failed to load filters: ${e.message}`
+    }]));
+  });
 };
 
 // SYNC

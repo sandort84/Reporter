@@ -5,6 +5,7 @@ import { ipcRenderer } from 'electron';
 import { hashHistory } from 'react-router';
 
 import * as actionCreators from '../actions';
+import Messages from './Messages.jsx';
 
 class App extends Component {
   static propTypes = {
@@ -41,6 +42,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Messages {...this.props} />
         {React.cloneElement(this.props.children, this.props)}
       </div>
     );
@@ -52,7 +54,8 @@ const mapStateToProps = (state) => ({
   filters: state.filters,
   selectedFilter: state.selectedFilter,
   issues: state.issues,
-  active: state.active
+  active: state.active,
+  messages: state.messages
 });
 
 const mapDispatchToProps = (dispatch) => {

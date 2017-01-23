@@ -1,4 +1,4 @@
-import { REQUEST_FILTERS, RECEIVE_FILTERS, SELECT_FILTER } from '../actions';
+import { REQUEST_FILTERS, RECEIVE_FILTERS, FAIL_FILTERS, SELECT_FILTER } from '../actions';
 
 export const selectedFilter = (state = '', action) => {
   switch (action.type) {
@@ -13,6 +13,8 @@ export const filters = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_FILTERS:
       return action.filters;
+    case FAIL_FILTERS:
+      return [];
     default:
       return state;
   }
