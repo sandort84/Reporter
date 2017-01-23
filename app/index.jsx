@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { Router, Route, IndexRoute, Redirect, hashHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
+import { ipcRenderer } from 'electron';
 
 import createLogger from 'redux-logger';
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
@@ -33,8 +34,11 @@ if (process.env.NODE_ENV !== 'production') {
 
 }
 
+const connection = ipcRenderer.sendSync('get-connection-details');
+
 const store = createStore(
   reducer,
+  {connection},
   applyMiddleware(...middleware)
 );
 const history = syncHistoryWithStore(hashHistory, store);
