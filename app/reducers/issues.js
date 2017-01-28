@@ -1,4 +1,4 @@
-import { REQUEST_ISSUES, RECEIVE_ISSUES, TOGGLE_ISSUE } from '../actions';
+import { REQUEST_ISSUES, RECEIVE_ISSUES, START_ISSUE, END_ISSUE } from '../actions';
 
 export const issues = (state = [], action) => {
   switch (action.type) {
@@ -9,15 +9,15 @@ export const issues = (state = [], action) => {
   }
 }
 
-export const active = (state = '', action) => {
+export const active = (state = {}, action) => {
   switch (action.type) {
-    case TOGGLE_ISSUE:
-      if (state === '') {
-        return action.issueId;
-      } else if (state === action.issueId) {
-        return '';
+    case START_ISSUE:
+      return {
+        id: action.issueId,
+        start: action.time
       }
-      return action.issueId;
+    case END_ISSUE:
+      return {};
     default:
       return state;
   }

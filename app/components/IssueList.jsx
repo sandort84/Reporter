@@ -14,7 +14,7 @@ const IssueList = props => {
         <tbody>
           {
             issues.map(issue =>
-              <tr key={issue.id} onDoubleClick={evt => handleIssueDoubleClick(evt, issue.id)} className={issue.id === active ? 'success' : ''}>
+              <tr key={issue.id} onDoubleClick={evt => handleIssueDoubleClick(evt, issue.id)} className={issue.id === active.id ? 'success' : ''}>
                 <td className="no-wrap">
                   <a href="" onClick={evt => handleIssueClick(evt, issue.key)}>{issue.key}</a>
                 </td>

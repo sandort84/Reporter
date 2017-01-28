@@ -28,7 +28,15 @@ class App extends Component {
       key: PropTypes.string.isRequired,
       summary: PropTypes.string
     })).isRequired,
-    active: PropTypes.string,
+    active: PropTypes.shape({
+      id: PropTypes.string,
+      start: PropTypes.number
+    }),
+    localLog: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      start: PropTypes.number.isRequired,
+      end: PropTypes.number.isRequired
+    })),
     status: PropTypes.string.isRequired
   };
   constructor(props) {
@@ -64,7 +72,8 @@ const mapStateToProps = (state) => ({
   issues: state.issues,
   active: state.active,
   messages: state.messages,
-  status: state.status
+  status: state.status,
+  localLog: state.localLog
 });
 
 const mapDispatchToProps = (dispatch) => {

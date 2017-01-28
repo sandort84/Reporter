@@ -5,6 +5,7 @@ import { filters, selectedFilter } from './filters';
 import { issues, active } from './issues';
 import { connection, status } from './connection';
 import { messages } from './messages';
+import { localLog } from './worklog';
 
 const reporterApp = combineReducers({
   connection,
@@ -14,6 +15,7 @@ const reporterApp = combineReducers({
   active,
   messages,
   status,
+  localLog,
   routing: routerReducer
 });
 

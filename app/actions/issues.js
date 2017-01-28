@@ -1,3 +1,5 @@
+import { addEntry } from './worklog';
+
 export const REQUEST_ISSUES = 'REQUEST_ISSUES';
 export const RECEIVE_ISSUES = 'RECEIVE_ISSUES';
 // TODO: export const FAIL_ISSUES = 'FAIL_ISSUES';
@@ -42,11 +44,36 @@ export const fetchIssues = (connection, jql) => dispatch => {
 
 // SYNC
 
-export const TOGGLE_ISSUE = 'TOGGLE_ISSUE';
+export const START_ISSUE = 'START_ISSUE';
+export const END_ISSUE = 'END_ISSUE';
 
-export const toggleIssue = issueId => {
+const startIssue = (issueId, time) => {
   return {
-    type: TOGGLE_ISSUE,
-    issueId
-  };
+    type: START_ISSUE,
+    issueId,
+    time
+  }
+};
+
+const endIssue = (active, time) => dispatch => {
+  dispatch(addEntry({
+    ...active,
+    end: time
+  }));
+  return dispatch({
+    type: END_ISSUE
+  })
+};
+
+export const toggleIssue = issueId => (dispatch, getState) => {
+  const { active } = getState();
+  const time = new Date().getTime();
+  if (active.id === issueId) {
+    return dispatch(endIssue(issueId, time));
+  }
+  if (!active.id) {
+    return dispatch(startIssue(issueId, time));
+  }
+  dispatch(endIssue(active, time));
+  return dispatch(startIssue(issueId, time));
 };
