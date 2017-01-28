@@ -8,7 +8,7 @@ const IssueList = props => {
         <thead>
           <tr>
             <th>Key</th>
-            <th onSelect={evt => {evt.preventDefault();}}>Summary</th>
+            <th>Summary</th>
           </tr>
         </thead>
         <tbody>
