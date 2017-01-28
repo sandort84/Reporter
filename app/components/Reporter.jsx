@@ -28,6 +28,7 @@ class Reporter extends Component {
     }
     this.issueClickTimer = window.setTimeout(() => {
       shell.openExternal(`${this.props.connection.jiraUrl}/browse/${key}`);
+      this.issueClickTimer = undefined;
     }, 1000);
   }
 
