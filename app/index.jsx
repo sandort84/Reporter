@@ -12,6 +12,8 @@ import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 import FontAwesome from 'font-awesome/css/font-awesome.css';
 import FontAwesomeAnimation from 'font-awesome-animation/dist/font-awesome-animation.css';
 
+import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
+
 import reducer from './reducers';
 import App from './components/App.jsx';
 import Settings from './components/Settings.jsx';
@@ -19,7 +21,9 @@ import Reporter from './components/Reporter.jsx';
 
 import './app.css';
 
-import installExtension, { REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
+if (module.hot) {
+  module.hot.accept();
+}
 
 const middleware = [ thunk, routerMiddleware(hashHistory) ];
 

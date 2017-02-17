@@ -6,8 +6,8 @@ const prodConfig = require('./webpack.config.production');
 
 const config = Object.assign({}, prodConfig, {
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
      'process.env.NODE_ENV': JSON.stringify('development')
    })
@@ -15,8 +15,9 @@ const config = Object.assign({}, prodConfig, {
 });
 
 const host = 'localhost';
+const contentBase = path.join(__dirname, "dist");
 const port = 9000;
-config.devServer = { host, port };
+config.devServer = { contentBase, port };
 config.output.publicPath = `http://${host}:${port}/dist/`;
 
 module.exports = config;

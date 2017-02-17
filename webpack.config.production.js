@@ -10,62 +10,99 @@ const config = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
-  plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': '"production"'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        warnings: false
-      }
-    })
-  ],
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js[x]?$/,
-        loaders: ['babel'],
-        include: path.join(__dirname, 'app')
-      },
-      {
-        test: /\.json$/,
-        loader: "json-loader"
+        include: [
+          path.resolve(__dirname, 'app')
+        ],
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: ['transform-class-properties', 'transform-object-rest-spread'],
+            presets: ['es2015', 'react']
+          }
+        }
       },
       // CSS
       {
         test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
       },
       {
         test: /\.png$/,
-        loader: 'url-loader?limit=100000'
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 100000
+          }
+        }
       },
       {
         test: /\.jpg$/,
-        loader: 'file-loader'
+        use: {
+          loader: 'file-loader'
+        }
       },
       {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=application/font-woff'
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            mimetype: 'application/font-woff'
+          }
+        }
       },
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=application/octet-stream'
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            mimetype: 'application/octet-stream'
+          }
+        }
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'file'
+        use: {
+          loader: 'file-loader'
+        }
       },
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: 'url?limit=10000&mimetype=image/svg+xml'
+        use: {
+          loader: 'url-loader',
+          options: {
+            limit: 10000,
+            mimetype: 'image/svg+xml'
+          }
+        }
       }
     ]
   },
-  target: 'electron-renderer'
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('production'),
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      compress: {
+        warnings: true,
+        drop_console: false
+      }
+    })
+  ],
+  target: 'electron-renderer',
+  devtool: 'source-map'
+
+//  externals: ['react']
 }
 
 module.exports = config;
